@@ -42,18 +42,24 @@ const  move WHITE_PAWN_MOVES_FIRSTMOVE[1]={
 const int  WHITE_QUEEN_MOVES__FIRSTMOVE_COUNT = 1 ;
 
 const  move BLACK_PAWN_MOVES[1]={
-    {-1,0}
+    {1,0}
 };
 const int  BLACK_QUEEN_MOVES_COUNT = 1 ;
 
 const  move BLACK_PAWN_MOVES_FIRSTMOVE[1]={
-    {-2,0}
+    {2,0}
 };
 const int  BLACK_QUEEN_MOVES__FIRSTMOVE_COUNT = 1 ;
 
-const  move WHITE_PAWN_MOVES[1]={
-    {-1,0}
+const  move WHITE_PAWN_MOVESC[2]={
+    {-1,1},{-1,-1}
 };
-const int  WHITE_QUEEN_MOVES_COUNT = 1 ;
+const int  WHITE_QUEEN_MOVESC_COUNT = 2 ;
+
+const  move BLACK_PAWN_MOVESC[2]={
+    {1,1},{1,-1}
+};
+const int  BLACK_QUEEN_MOVESC_COUNT = 2 ;
+
 
 #endif
