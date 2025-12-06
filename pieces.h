@@ -62,4 +62,14 @@ const  move BLACK_PAWN_MOVESC[2]={
 const int  BLACK_QUEEN_MOVESC_COUNT = 2 ;
 
 
+const move WHITE_PAWNC[2] = {
+    {-1, -1}, {-1, 1}
+};
+const int WHITE_PAWNC_COUNT = 2;
+
+const move BLACK_PAWNC[2] = {
+    {1, -1}, {1, 1}
+};
+const int BLACK_PAWN_CAPTURE_COUNT = 2;
+
 #endif
