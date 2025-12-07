@@ -1,10 +1,10 @@
 #ifndef PIECES_H
 #define PIECES_H
 
-struct move{
+typedef struct{
     int row ;
     int col ;
-};
+}move;
 
 const move KNIGHT_MOVES[8]={
     {2,1},{2,-1},{1,2},{1,-2},{-2,1},{-2,-1},{-1,2},{-1,-2}
