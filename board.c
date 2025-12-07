@@ -13,17 +13,20 @@ void initboard(){
 }
 
 void basicboard(){
-    printf("    A   B   C   D   E   F   G   H\n");
-    printf("  +-------------------------------+\n");
+    printf("     A     B     C     D     E     F     G     H\n");
+    printf("  ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐\n");
     for(int row=0 ; row<BOARD_SIZE ; row++){
         printf("%d | ",8-row);
         for(int col=0 ; col<BOARD_SIZE ; col++){
-            printf("%c | ",board[row][col]);
+            printf("%c   | ",board[row][col]);
         }
         printf(" %d\n",8-row);
+        if (row < BOARD_SIZE -1){
+            printf("  ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤\n");
+        }
     }
-    printf("  +-------------------------------+\n");
-    printf("    A   B   C   D   E   F   G   H\n");
+    printf("  └─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘\n");
+    printf("    A      B     C     D     E     F     G    H\n");
 }
 
 Piece getPiece(int row , int col){
