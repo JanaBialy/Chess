@@ -66,4 +66,13 @@ const move BLACK_PAWNC[2] = {
 };
 const int BLACK_PAWN_CAPTURE_COUNT = 2;
 
+typedef enum {
+    WHITE , BLACK 
+}color;
+
+typedef enum {
+    EMPTY , PAWN , KNIGHT , BISHOP , ROOK , QUEEN , KING
+}piece_type;
+
+
 #endif
