@@ -1,10 +1,10 @@
 #ifndef PIECES_H
 #define PIECES_H
 
-struct move{
+typedef struct{
     int row ;
     int col ;
-};
+}move;
 
 const move KNIGHT_MOVES[8]={
     {2,1},{2,-1},{1,2},{1,-2},{-2,1},{-2,-1},{-1,2},{-1,-2}
@@ -65,5 +65,14 @@ const move BLACK_PAWNC[2] = {
     {1, -1}, {1, 1}
 };
 const int BLACK_PAWN_CAPTURE_COUNT = 2;
+
+typedef enum {
+    WHITE , BLACK 
+}color;
+
+typedef enum {
+    EMPTY , PAWN , KNIGHT , BISHOP , ROOK , QUEEN , KING
+}piece_type;
+
 
 #endif
