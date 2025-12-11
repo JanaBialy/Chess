@@ -30,8 +30,10 @@ typedef struct {
 } Board;
 
 void initboard(Board*board);
-void basicboard(Board*board);
+void dispboard(Board*board);
 Piece getPiece (Board*board, int row , int col);
 void setPiece(Board*board, int row , int col , Piece piece);
+
+extern Board board;
 
 #endif

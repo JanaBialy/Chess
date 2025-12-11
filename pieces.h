@@ -1,5 +1,6 @@
 #ifndef PIECES_H
 #define PIECES_H
+#include"board.h"
 
 typedef struct{
     int row ;
@@ -29,32 +30,28 @@ const int  QUEEN_MOVES_COUNT = 8 ;
 const move KING_MOVES[8]={
     {1,0},{-1,0},{0,1},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}
 };
-const int  QUEEN_MOVES_COUNT = 8 ;
+const int  KING_MOVES_COUNT = 8 ;
 
 const  move WHITE_PAWN_MOVES[1]={
     {-1,0}
 };
-const int  WHITE_QUEEN_MOVES_COUNT = 1 ;
+const int  WHITE_PAWN_MOVES_COUNT = 1 ;
 
 const  move WHITE_PAWN_MOVES_FIRSTMOVE[1]={
     {-2,0}
 };
-const int  WHITE_QUEEN_MOVES__FIRSTMOVE_COUNT = 1 ;
+const int  WHITE_PAWN_MOVES_FIRSTMOVE_COUNT = 1 ;
 
 const  move BLACK_PAWN_MOVES[1]={
-    {-1,0}
+    {1,0}
 };
 const int  BLACK_QUEEN_MOVES_COUNT = 1 ;
 
 const  move BLACK_PAWN_MOVES_FIRSTMOVE[1]={
     {-2,0}
 };
-const int  BLACK_QUEEN_MOVES__FIRSTMOVE_COUNT = 1 ;
+const int  BLACK_PAWN_MOVES_FIRSTMOVE_COUNT = 1 ;
 
-const  move WHITE_PAWN_MOVES[1]={
-    {-1,0}
-};
-const int  WHITE_QUEEN_MOVES_COUNT = 1 ;
 
 const move WHITE_PAWNC[2] = {
     {-1, -1}, {-1, 1}
@@ -74,5 +71,13 @@ typedef enum {
     EMPTY , PAWN , KNIGHT , BISHOP , ROOK , QUEEN , KING
 }piece_type;
 
+
+bool isvaliddestination(const Board *board, int torow, int tocol, PieceColor color);
+bool isvalidrookmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
+bool isvalidknightmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
+bool isvalidbishopmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
+bool isvalidqueenmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
+bool isvalidkingmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
+bool isvalidpawnmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
 
 #endif

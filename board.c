@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "board.h"
 
-Board board;
+
 
 void initboard(Board *board){
     for(int row=0 ; row<BOARD_SIZE ; row++){
@@ -67,7 +67,7 @@ void initboard(Board *board){
 
 }
 
-void basicboard(Board*board){
+void dispboard(Board*board){
     printf("     A     B     C     D     E     F     G     H\n");
     printf("  ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐\n");
     for(int row=0 ; row<BOARD_SIZE ; row++){
@@ -128,7 +128,3 @@ void setPiece(Board*board, int row , int col , Piece piece){
     board->squares[row][col] = piece ;
 }
 
-int main(){
-    initboard(&board);
-    basicboard(&board);
-}

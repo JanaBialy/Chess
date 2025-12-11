@@ -1,7 +1,21 @@
 #ifndef INPUT_H
 #define INPUT_H
-void takeinput(char fromchar, int fromint, char tochar, int toint);
-bool isvalidinput(char fromchar, int fromint, char tochar, int toint);
-bool isnotempty(char fromchar, int fromint );
-bool isfree(char tochar, int toint);
+#include"board.h"
+#include<stdbool.h>
+
+typedef struct{
+    int fromrow;
+    int fromcol;
+    int torow;
+    int tocol;
+    char promotion;
+    bool validinput;
+} Move;
+
+
+
+Move takeinput();
+
+bool isnotempty(Move move , Board *board);
+
 #endif
