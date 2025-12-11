@@ -2,14 +2,38 @@
 #define BOARD_H
 #define BOARD_SIZE 8
 
+
+typedef enum{
+    empty,
+    pawn,
+    rook,
+    knight,
+    bishop,
+    queen,
+    king
+    
+} PieceType;
+
+typedef enum{
+    none,
+    white, 
+    black
+} PieceColor;
+
 typedef struct{
-    char type ;
-    char color ;
+    PieceType type ;
+    PieceColor color ;
 }Piece;
 
-void initboard();
-void basicboard();
-Piece getPiece (int row , int col);
-void setPiece(int row , int col , Piece piece);
+typedef struct {
+    Piece squares[8][8];
+} Board;
+
+void initboard(Board*board);
+void dispboard(Board*board);
+Piece getPiece (Board*board, int row , int col);
+void setPiece(Board*board, int row , int col , Piece piece);
+
+extern Board board;
 
 #endif

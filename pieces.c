@@ -1,2 +1,2 @@
-#include <stdio.h>
-#include "pieces.h"
+#include<stdio.h>
+#include<stdbool.h>
