@@ -69,3 +69,4 @@ bool isnotempty(Move move , Board *board){
 }
 
 
+
