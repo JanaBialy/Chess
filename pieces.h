@@ -63,21 +63,13 @@ const move BLACK_PAWNC[2] = {
 };
 const int BLACK_PAWN_CAPTURE_COUNT = 2;
 
-typedef enum {
-    WHITE , BLACK 
-}color;
-
-typedef enum {
-    EMPTY , PAWN , KNIGHT , BISHOP , ROOK , QUEEN , KING
-}piece_type;
-
-
-bool isvaliddestination(const Board *board, int torow, int tocol, PieceColor color);
 bool isvalidrookmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
 bool isvalidknightmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
 bool isvalidbishopmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
 bool isvalidqueenmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
 bool isvalidkingmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
 bool isvalidpawnmove(Board*board,int fromrow, int fromcol, int torow, int tocol);
+bool ispathclear(Board*board, int fromrow, int fromcol, int torow, int tocol);
+int absolute(int x);
 
 #endif
