@@ -4,7 +4,15 @@
 #include<ctype.h>
 #include"input.h"
 #include"board.h"
+#include"pieces.h"
 
+bool isvaliddestination(const Board *board, int torow, int tocol, PieceColor color){
+    Piece destpiece = board->squares[torow][tocol];
+    if (destpiece.type != empty && destpiece.color == color){
+        return false;
+    }
+    return true;
+}
 
 Move takeinput(Board *board, PieceColor currentturn){
     Move move ;
@@ -55,7 +63,10 @@ Move takeinput(Board *board, PieceColor currentturn){
         }
         move.promotion = promotion;
     }
-
+    if (!isvaliddestination(board, move.torow, move.tocol, currentturn)){
+        printf("Invalid destination: cannot capture own piece!\n");
+        return move;
+    }
     move.validinput = true;
     return move;
 }
