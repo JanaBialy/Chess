@@ -12,10 +12,8 @@ typedef struct{
     bool validinput;
 } Move;
 
-
-
 Move takeinput();
-
+bool isvaliddestination(const Board *board, int torow, int tocol, PieceColor color);
 bool isnotempty(Move move , Board *board);
 
 #endif

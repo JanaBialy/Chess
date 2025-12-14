@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
 #include "board.h"
-
-
+#include "input.h"
+#include "pieces.h"
 
 void initboard(Board *board){
     for(int row=0 ; row<BOARD_SIZE ; row++){
@@ -10,7 +13,7 @@ void initboard(Board *board){
             board->squares[row][col].color = none;
         }
     }
-    board->squares[7][0].type= rook;
+    board->squares[7][0].type=rook;
     board->squares[7][0].color=white;
 
     board->squares[7][1].type=knight;
@@ -82,9 +85,7 @@ void dispboard(Board*board){
                 printf("    | ");
                 continue;
             }
-            
             else {
-                
                 switch (p.type){
                     case pawn:
                         piece = 'p';
@@ -105,9 +106,7 @@ void dispboard(Board*board){
                         piece = 'k';
                 }
             if (p.color == black)
-            piece-=32;
-            
-                
+            piece-=32;   
             }
             printf(" %c  | ",piece);
         }
@@ -128,3 +127,78 @@ void setPiece(Board*board, int row , int col , Piece piece){
     board->squares[row][col] = piece ;
 }
 
+void makemove(Board*board,Move move){
+    Piece piece = board->squares[move.fromrow][move.fromcol];
+    if (move.promotion !='\0'){
+        if (move.promotion == 'Q') piece.type = queen ;
+        else if (move.promotion == 'R') piece.type = rook ;
+        else if (move.promotion == 'B') piece.type = bishop ;
+        else if (move.promotion == 'N') piece.type = knight ;
+    }
+    board->squares[move.torow][move.tocol]=piece ;
+    board->squares[move.fromrow][move.fromcol].type=empty ;
+    board->squares[move.fromrow][move.fromcol].color=none ;
+}
+
+Piece getcapturedpiece(Board*board,Move move){
+    return board->squares[move.torow][move.tocol];
+}
+
+int issquareattacked(Board*board,int fromrow,int fromcol,PieceColor attackingcolor){
+    for (int row=0 ; row<BOARD_SIZE ; row++){
+        for (int col=0 ; col<BOARD_SIZE ; col++){
+            Piece piece = board->squares[row][col];
+            if (piece.color == attackingcolor){
+                bool validmove = false ;
+                switch (piece.type){
+                    case pawn:
+                        validmove = isvalidpawnmove(board,row,col,fromrow,fromcol);
+                        break;
+                    case rook:
+                        validmove = isvalidrookmove(board,row,col,fromrow,fromcol);
+                        break;
+                    case knight:
+                        validmove = isvalidknightmove(board,row,col,fromrow,fromcol);
+                        break;
+                    case bishop:
+                        validmove = isvalidbishopmove(board,row,col,fromrow,fromcol);
+                        break;
+                    case queen:
+                        validmove = isvalidqueenmove(board,row,col,fromrow,fromcol);
+                        break;
+                    case king:
+                        validmove = isvalidkingmove(board,row,col,fromrow,fromcol);
+                        break;
+                    default:
+                        break;
+                }
+                if (validmove){
+                    return 1 ;
+                }}}}
+    return 0 ;
+}
+
+void findKing(Board*board, PieceColor color, int* kingRow, int* kingCol){
+    for(int row=0 ; row<BOARD_SIZE ; row++){
+        for(int col=0 ; col<BOARD_SIZE ; col++){
+            Piece piece = board->squares[row][col];
+            if(piece.type == king && piece.color == color){
+                *kingRow = row ;
+                *kingCol = col ;
+                return ;
+            }
+        }
+    }
+    *kingRow = -1 ;
+    *kingCol = -1 ;
+}
+
+int isincheck(Board*board,PieceColor color){
+    int kingrow , kingcol ;
+    findKing(board,color,&kingrow,&kingcol);
+    if (kingrow == -1 || kingcol == -1){
+        return 0 ;
+    }
+    PieceColor opponentcolor = (color == white) ? black : white ;
+    return issquareattacked(board,kingrow,kingcol,opponentcolor);
+}
