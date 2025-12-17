@@ -202,3 +202,80 @@ int isincheck(Board*board,PieceColor color){
     PieceColor opponentcolor = (color == white) ? black : white ;
     return issquareattacked(board,kingrow,kingcol,opponentcolor);
 }
+
+int wouldbeincheck(Board*board, Move move, PieceColor color){
+    Piece from= board->squares[move.fromrow][move.fromcol];
+    Piece to=  board->squares[move.torow][move.tocol];
+
+    board->squares[move.fromrow][move.fromcol]=board->squares[move.torow][move.tocol];
+    board->squares[move.torow][move.tocol].color= none;
+    board->squares[move.torow][move.tocol].type= empty;
+
+    int ischeck= isincheck(board, color);
+
+    board->squares[move.fromrow][move.fromcol]=from;
+    board->squares[move.torow][move.tocol]=to;
+    return ischeck;
+}
+
+int hasvalidmoves(Board* board, PieceColor color){
+    for (int i=0; i<8; i++){
+        for (int j=0; j<8; j++){
+            if (board->squares[i][j].type==empty)
+            continue;
+            if (board->squares[i][j].color!=color)
+            continue;
+            for(int dr=0; dr<8; dr++){
+                for(int dc=0; dc<8; dc++){
+                    if (dr==i&&dc==j)
+                    continue;
+                    Move move;
+                    move.fromrow = i;
+                    move.fromcol = j;
+                    move.torow= dr;
+                    move.tocol= dc;
+                    bool validmove= false;
+
+                    switch (board->squares[i][j].type){
+                        case pawn:
+                            validmove= isvalidpawnmove(board, i, j, dr, dc);
+                            break;
+                        case rook:
+                            validmove= isvalidrookmove(board, i, j, dr, dc);
+                            break;
+                        case knight:
+                            validmove= isvalidknightmove(board, i, j, dr, dc);
+                            break;
+                        case bishop:
+                            validmove= isvalidbishopmove(board, i, j, dr, dc);
+                            break;
+                        case queen:
+                            validmove= isvalidqueenmove(board, i, j, dr, dc);
+                            break;
+                        case king:
+                            validmove= isvalidkingmove(board, i, j, dr, dc);
+                            break;
+                    }
+                    if (validmove){
+                        if(!wouldbeincheck(board,move,color))
+                        return 1;
+                    }
+
+
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+int ischeckmate(Board* board,PieceColor color){
+    if(isincheck(board, color)&&!hasvalidmoves(board, color))
+    return 1;
+    return 0;
+}
+int isstalemate(Board* board, PieceColor color){
+    if(!isincheck(board, color)&&!hasvalidmoves(board, color))
+    return 1;
+    return 0;
+}
