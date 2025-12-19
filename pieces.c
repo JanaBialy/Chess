@@ -110,6 +110,9 @@ bool isvalidpawnmove(Board*board,int fromrow,int fromcol,int torow,int tocol){
             if(destpiece.type != empty && destpiece.color == black){
                 return true;
             }
+            if (board->enpassantpossible && tocol == board->enpassantcol && torow == board->enpassantrow){
+                return true;
+            }
             else{
                 printf("Invalid pawn capture move!\n");
                 return false;
@@ -132,6 +135,9 @@ bool isvalidpawnmove(Board*board,int fromrow,int fromcol,int torow,int tocol){
         else if(coldiff == 1 && rowdiff == 1){
             Piece destpiece = board->squares[torow][tocol];
             if(destpiece.type != empty && destpiece.color == white){
+                return true;
+            }
+            if (board->enpassantpossible && tocol == board->enpassantcol && torow == board->enpassantrow){
                 return true;
             }
             else{

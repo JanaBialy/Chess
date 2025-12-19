@@ -68,6 +68,19 @@ void initboard(Board *board){
     board->squares[0][7].type=rook;
     board->squares[0][7].color=black;
 
+    board->capturedwhitecount = 0;
+    board->capturedblackcount = 0;
+    for(int i=0; i<16; i++){
+        board->capturedwhitepieces[i].type = empty;
+        board->capturedwhitepieces[i].color = none;
+        board->capturedblackpieces[i].type = empty;
+        board->capturedblackpieces[i].color = none;
+    }
+
+    board->enpassantpossible = false ;
+    board->enpassantcol = -1 ;
+    board->enpassantrow = -1 ;
+    board->turn = white ;
 }
 
 void dispboard(Board*board){
@@ -129,7 +142,49 @@ void setPiece(Board*board, int row , int col , Piece piece){
 
 void makemove(Board*board,Move move){
     Piece piece = board->squares[move.fromrow][move.fromcol];
-    if (move.promotion !='\0'){
+    if(piece.type == pawn && board -> enpassantpossible){
+        if (piece.color == white && move.torow == board->enpassantrow && move.tocol == board->enpassantcol){
+            Piece capturedpawn = board->squares[move.torow + 1][move.tocol];
+            board->capturedblackpieces[board->capturedblackcount++] = capturedpawn ;
+            board->squares[move.torow + 1][move.tocol].type = empty ;
+            board->squares[move.torow + 1][move.tocol].color = none ;
+            printf("En Passant capture!\n");
+        }
+        else if (piece.color == black && move.torow == board->enpassantrow && move.tocol == board->enpassantcol){
+            Piece capturedpawn = board->squares[move.torow - 1][move.tocol];
+            board->capturedwhitepieces[board->capturedwhitecount++] = capturedpawn ;
+            board->squares[move.torow - 1][move.tocol].type = empty ;
+            board->squares[move.torow - 1][move.tocol].color = none ;
+            printf("En Passant capture!\n");
+        }
+    }
+    board->enpassantpossible = false ;  
+    board->enpassantcol = -1 ;
+    board->enpassantrow = -1 ;
+    if (piece.type == pawn){
+        if( piece.color == white && move.fromrow == 6 && move.torow == 4){
+            board->enpassantpossible = true ;
+            board->enpassantcol = move.tocol ;
+            board->enpassantrow = 5 ;
+            printf("En Passant now available \n");
+        }
+        else if (piece.color == black && move.fromrow == 1 && move.torow == 3){
+            board->enpassantpossible = true ;
+            board->enpassantcol = move.tocol ;
+            board->enpassantrow = 2 ;
+            printf("En Passant now available \n");
+        }
+    }
+    Piece capturedpiece = board->squares[move.torow][move.tocol];
+    if (capturedpiece.type != empty){
+        if (capturedpiece.color == white){
+            board->capturedwhitepieces[board->capturedwhitecount++] = capturedpiece ;
+        }
+        else if (capturedpiece.color == black){
+            board->capturedblackpieces[board->capturedblackcount++] = capturedpiece ;
+        }
+    }
+    if (piece.type == pawn && move.promotion !='\0'){
         if (move.promotion == 'Q') piece.type = queen ;
         else if (move.promotion == 'R') piece.type = rook ;
         else if (move.promotion == 'B') piece.type = bishop ;
@@ -138,6 +193,72 @@ void makemove(Board*board,Move move){
     board->squares[move.torow][move.tocol]=piece ;
     board->squares[move.fromrow][move.fromcol].type=empty ;
     board->squares[move.fromrow][move.fromcol].color=none ;
+    board->turn = (board->turn == white) ? black : white ;          
+}
+
+void displaycapturedpieces(Board*board){
+    printf("Captured White Pieces: ");
+    for(int i=0; i<board->capturedwhitecount; i++){
+        Piece p = board->capturedwhitepieces[i];
+        char piece =' ';
+        switch (p.type){
+            case pawn:
+                piece = 'p';
+                break;
+            case rook:
+                piece = 'r';
+                break;
+            case knight:
+                piece = 'n';
+                break;
+            case bishop:
+                piece = 'b';
+                break;
+            case queen:
+                piece = 'q';
+                break;
+            case king:
+                piece = 'k';
+                break;
+            default:
+                continue;
+        }
+        printf("%c ", piece);
+    }
+    printf("\nCaptured Black Pieces: ");
+    for(int i=0; i<board->capturedblackcount; i++){
+        Piece p = board->capturedblackpieces[i];
+        char piece =' ';
+        switch (p.type){
+            case pawn:
+                piece = 'P';
+                break;
+            case rook:
+                piece = 'R';
+                break;
+            case knight:
+                piece = 'N';
+                break;
+            case bishop:
+                piece = 'B';
+                break;
+            case queen:
+                piece = 'Q';
+                break;
+            case king:
+                piece = 'K';
+                break;
+            default:
+                continue;
+        }
+        printf("%c ", piece);
+    }
+    printf("\n");
+}
+
+void fulldispboard(Board*board){
+    dispboard(board);
+    displaycapturedpieces(board);
 }
 
 Piece getcapturedpiece(Board*board,Move move){
@@ -278,4 +399,45 @@ int isstalemate(Board* board, PieceColor color){
     if(!isincheck(board, color)&&!hasvalidmoves(board, color))
     return 1;
     return 0;
+}
+
+int getmaterialvalue(PieceType type){
+    switch(type){
+        case pawn:
+            return 1;
+        case knight:
+            return 3;
+        case bishop:
+            return 3;
+        case rook:
+            return 5;
+        case queen:
+            return 9;
+        case king:
+            return 0;
+        default:
+            return 0;
+    }
+}
+
+void displayadvantage(const Board*board){
+    int whitecapturedvalues = 0;
+    int blackcapturedvalues = 0;
+    for(int i=0; i<board->capturedwhitecount; i++){
+        whitecapturedvalues += getmaterialvalue(board->capturedwhitepieces[i].type);
+    }
+    for(int i=0; i<board->capturedblackcount; i++){
+        blackcapturedvalues += getmaterialvalue(board->capturedblackpieces[i].type);
+    }
+    int advantage = blackcapturedvalues - whitecapturedvalues;
+    if (advantage > 0){
+        printf("Black has a material advantage of %d points.\n", advantage);
+    }
+    else if (advantage < 0){
+        printf("White has a material advantage of %d points.\n", -advantage);
+    }
+    else{
+        printf("Equal no advantage!\n");
+    }
+
 }
