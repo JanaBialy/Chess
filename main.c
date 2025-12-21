@@ -1,11 +1,13 @@
-#include<stdio.h>
-#include<stdbool.h>
-#include<string.h>
-#include<ctype.h>
-#include"input.h"
-#include"board.h"
-#include"pieces.h"
-int main(){
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
+#include "input.h"
+#include "board.h"
+#include "pieces.h"
+#include "types.h"
+int main()
+{
     Board board;
     Move move;
     bool isnotempty_result = false;
@@ -13,9 +15,10 @@ int main(){
     PieceColor currentcolor = white;
     initboard(&board);
     dispboard(&board);
-    while(!validinput_result || !isnotempty_result){
-        Move move = takeinput();
-        isnotempty_result = isnotempty( move , &board);
+    while (!validinput_result || !isnotempty_result)
+    {
+        Move move = takeinput(&board, currentcolor);
+        isnotempty_result = isnotempty(move, &board);
         validinput_result = move.validinput;
     }
     return 0;
