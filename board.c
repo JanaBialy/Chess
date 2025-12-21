@@ -104,7 +104,7 @@ void dispboard(Board *board)
             if (p.type == empty)
             {
                 if ((row + col) % 2 == 0)
-                    printf(" ▓  | ");
+                    printf(" ▓▓ | ");
                 if ((row + col) % 2)
                     printf("    | ");
                 continue;
@@ -156,7 +156,7 @@ void setPiece(Board *board, int row, int col, Piece piece)
     board->squares[row][col] = piece;
 }
 
-void makemove(Board *board, Move move)
+void makemove(Board *board, Move move, PieceColor* currentcolor)
 {
     Piece piece = board->squares[move.fromrow][move.fromcol];
     if (piece.type == pawn && board->enpassantpossible)
@@ -248,7 +248,7 @@ void makemove(Board *board, Move move)
     board->squares[move.torow][move.tocol].hasmoved = true;
     board->squares[move.fromrow][move.fromcol].type = empty;
     board->squares[move.fromrow][move.fromcol].color = none;
-    board->turn = (board->turn == white) ? black : white;
+    *currentcolor = (*currentcolor == white) ? black : white;
 }
 
 void displaycapturedpieces(Board *board)
