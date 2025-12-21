@@ -486,7 +486,7 @@ int isstalemate(Board *board, PieceColor color)
     return 0;
 }
 
-int getmaterialvalue(Board *board, PieceType type)
+int getmaterialvalue(const Board *board, PieceType type)
 {
     switch (type)
     {

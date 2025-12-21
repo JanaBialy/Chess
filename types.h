@@ -37,4 +37,14 @@ typedef struct
     Piece capturedblackpieces[16];
     int capturedblackcount;
 } Board;
+
+typedef struct
+{
+    int fromrow;
+    int fromcol;
+    int torow;
+    int tocol;
+    char promotion;
+    bool validinput;
+} Move;
 #endif
