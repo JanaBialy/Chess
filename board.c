@@ -6,6 +6,7 @@
 #include "input.h"
 #include "pieces.h"
 #include "types.h"
+#include "undo.h"
 
 void initboard(Board *board)
 {
@@ -83,7 +84,6 @@ void initboard(Board *board)
         board->capturedblackpieces[i].type = empty;
         board->capturedblackpieces[i].color = none;
     }
-
     board->enpassantpossible = false;
     board->enpassantcol = -1;
     board->enpassantrow = -1;

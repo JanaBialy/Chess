@@ -1,5 +1,6 @@
 #ifndef Types_H
 #define Types_H
+#include <stdbool.h>
 typedef enum
 {
     empty,
@@ -47,4 +48,17 @@ typedef struct
     char promotion;
     bool validinput;
 } Move;
+
+typedef struct
+{
+    Board boardstate;
+    PieceColor currentturn;
+    Move movemade;
+}MoveEntry;
+
+typedef struct{
+    MoveEntry moves[500];
+    int historycount;
+    int current;
+}History;
 #endif
