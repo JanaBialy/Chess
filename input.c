@@ -94,18 +94,33 @@ bool movevalidation(Board *board, Move move){
     {
         case pawn:
             isvalidmove = isvalidpawnmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+            if (!isvalidmove){
+                printf("Invalid pawn move!\n");
+            }
             break;
         case rook:
             isvalidmove = isvalidrookmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+            if (!isvalidmove){
+                printf("Invalid rook move!\n");
+            }
             break;
         case knight:
             isvalidmove = isvalidknightmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+            if (!isvalidmove){
+                printf("Invalid knight move!\n");
+            }
             break;
         case bishop:
             isvalidmove = isvalidbishopmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+            if (!isvalidmove){
+                printf("Invalid bishop move!\n");
+            }
             break;
         case queen:
             isvalidmove = isvalidqueenmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+            if (!isvalidmove){
+                printf("Invalid queen move!\n");
+            }
             break;
         case king:
             isvalidmove = isvalidkingmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
@@ -113,6 +128,9 @@ bool movevalidation(Board *board, Move move){
             {
                 bool kingside = (move.tocol - move.fromcol) == 2;
                 isvalidmove = cancastle(board, piece.color, kingside);
+            }
+            if (!isvalidmove){
+                printf("Invalid king move!\n");
             }
             break;
         default:

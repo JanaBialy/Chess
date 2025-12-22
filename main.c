@@ -50,7 +50,7 @@ int main()
         {
             gameover = true;
             winner = (currentcolor == white) ? black : white;
-            printf("Checkmate! \n%s wins!\n", (winner == white) ? "White" : "Black");
+            printf("CHECKMATE! %s WINS!\n", (winner == white) ? "White" : "Black");
         }
         else if (isstalemate(&board, currentcolor))
         {

@@ -81,7 +81,6 @@ bool ispathclear(Board *board, int fromrow, int fromcol, int torow, int tocol)
     {
         if (board->squares[currentrow][currentcol].type != empty)
         {
-            printf("Path not clear!\n");
             return false;
         }
         currentrow += rowstep;
@@ -94,12 +93,16 @@ bool isvalidrookmove(Board *board, int fromrow, int fromcol, int torow, int toco
 {
     if (fromrow != torow && fromcol != tocol)
     {
-        printf("Rook moves must be horizontal or vertical!\n");
         return false;
     }
     if (!ispathclear(board, fromrow, fromcol, torow, tocol))
     {
-        printf("Rook's path is not clear!\n");
+        return false;
+    }
+    Piece dest = board->squares[torow][tocol];
+    Piece src = board->squares[fromrow][fromcol];
+    if (dest.type != empty && dest.color == src.color)
+    {
         return false;
     }
     return true;
@@ -111,7 +114,12 @@ bool isvalidknightmove(Board *board, int fromrow, int fromcol, int torow, int to
     int coldiff = absolute(tocol - fromcol);
     if (!((rowdiff == 2 && coldiff == 1) || (rowdiff == 1 && coldiff == 2)))
     {
-        printf("Invalid knight move(must be L shaped)!\n");
+        return false;
+    }
+    Piece dest = board->squares[torow][tocol];
+    Piece src = board->squares[fromrow][fromcol];
+    if (dest.type != empty && dest.color == src.color)
+    {
         return false;
     }
     return true;
@@ -123,12 +131,16 @@ bool isvalidbishopmove(Board *board, int fromrow, int fromcol, int torow, int to
     int coldiff = absolute(tocol - fromcol);
     if (rowdiff != coldiff)
     {
-        printf("Bishop moves must be diagonal!\n");
         return false;
     }
     if (!ispathclear(board, fromrow, fromcol, torow, tocol))
     {
-        printf("Bishop's path is not clear!\n");
+        return false;
+    }
+    Piece dest = board->squares[torow][tocol];
+    Piece src = board->squares[fromrow][fromcol];
+    if (dest.type != empty && dest.color == src.color)
+    {
         return false;
     }
     return true;
@@ -140,6 +152,12 @@ bool isvalidqueenmove(Board *board, int fromrow, int fromcol, int torow, int toc
         return true;
     else
         return false;
+    Piece dest = board->squares[torow][tocol];
+    Piece src = board->squares[fromrow][fromcol];
+    if (dest.type != empty && dest.color == src.color)
+    {
+        return false;
+    }
     return true;
 }
 bool isvalidkingmove(Board *board, int fromrow, int fromcol, int torow, int tocol)
@@ -148,7 +166,12 @@ bool isvalidkingmove(Board *board, int fromrow, int fromcol, int torow, int toco
     int coldiff = absolute(tocol - fromcol);
     if (rowdiff > 1 || coldiff > 1)
     {
-        printf("King moves only one square in any direction!\n");
+        return false;
+    }
+    Piece dest = board->squares[torow][tocol];
+    Piece src = board->squares[fromrow][fromcol];
+    if (dest.type != empty && dest.color == src.color)
+    {
         return false;
     }
     return true;
@@ -163,6 +186,9 @@ bool isvalidpawnmove(Board *board, int fromrow, int fromcol, int torow, int toco
     {
         if (coldiff == 0)
         {
+            if (board->squares[torow][tocol].type != empty) {
+                return false;
+            }
             if (rowdiff == -1)
             {
                 return true;
@@ -171,7 +197,6 @@ bool isvalidpawnmove(Board *board, int fromrow, int fromcol, int torow, int toco
             {
                 if (!ispathclear(board, fromrow, fromcol, torow, tocol))
                 {
-                    printf("Pawn's path is not clear!\n");
                     return false;
                 }
                 return true;
@@ -190,7 +215,6 @@ bool isvalidpawnmove(Board *board, int fromrow, int fromcol, int torow, int toco
             }
             else
             {
-                printf("Invalid pawn capture move!\n");
                 return false;
             }
         }
@@ -199,6 +223,9 @@ bool isvalidpawnmove(Board *board, int fromrow, int fromcol, int torow, int toco
     {
         if (coldiff == 0)
         {
+            if (board->squares[torow][tocol].type != empty) {
+                return false;
+            }
             if (rowdiff == 1)
             {
                 return true;
@@ -207,7 +234,6 @@ bool isvalidpawnmove(Board *board, int fromrow, int fromcol, int torow, int toco
             {
                 if (!ispathclear(board, fromrow, fromcol, torow, tocol))
                 {
-                    printf("Pawn's path is not clear!\n");
                     return false;
                 }
                 return true;
@@ -226,12 +252,10 @@ bool isvalidpawnmove(Board *board, int fromrow, int fromcol, int torow, int toco
             }
             else
             {
-                printf("Invalid pawn capture move!\n");
                 return false;
             }
         }
     }
-    printf("Invalid pawn move!\n");
     return false;
 }
 

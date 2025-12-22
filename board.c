@@ -398,6 +398,7 @@ int wouldbeincheck(Board *board, Move move, PieceColor color)
     board->squares[move.torow][move.tocol] = board->squares[move.fromrow][move.fromcol];
     board->squares[move.fromrow][move.fromcol].color = none;
     board->squares[move.fromrow][move.fromcol].type = empty;
+    board->squares[move.fromrow][move.fromcol].hasmoved = false;
 
     int ischeck = isincheck(board, color);
 
