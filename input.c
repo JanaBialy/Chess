@@ -50,8 +50,8 @@ Move takeinput(Board *board, PieceColor currentturn)
 
     move.fromcol = cleaned[0] - 'A';
     move.tocol = cleaned[2] - 'A';
-    move.fromrow = cleaned[1] - '1';
-    move.torow = cleaned[3] - '1';
+    move.fromrow = '8'- cleaned[1] ;
+    move.torow = '8'- cleaned[3];
 
     if (move.fromcol < 0 || move.fromcol > 7 ||
         move.tocol < 0 || move.tocol > 7 ||
@@ -78,11 +78,16 @@ Move takeinput(Board *board, PieceColor currentturn)
         printf("Invalid destination: cannot capture own piece!\n");
         return move;
     }
+    if (board->squares[move.fromrow][move.fromcol].color != currentturn)
+    {
+        printf("It's not your turn!\n");
+        return move;
+    }
     move.validinput = true;
     return move;
 }
 
-bool isnotempty(Move move, Board *board)
+bool isnotempty( Board *board, Move move)
 {
     if (board->squares[move.fromrow][move.fromcol].type == empty)
     {

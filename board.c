@@ -100,41 +100,30 @@ void dispboard(Board *board)
         for (int col = 0; col < BOARD_SIZE; col++)
         {
             Piece p = board->squares[row][col];
-            char piece = ' ';
             if (p.type == empty)
             {
                 if ((row + col) % 2 == 0)
-                    printf(" ▓  | ");
-                if ((row + col) % 2)
-                    printf("    | ");
+                    printf("░░░░│ ");
+                else
+                    printf("    │ ");
                 continue;
             }
-            else
+            
+            // Use string pointers for Unicode pieces
+            const char* piece_symbol = "?";
+            switch (p.type)
             {
-                switch (p.type)
-                {
-                case pawn:
-                    piece = 'p';
-                    break;
-                case rook:
-                    piece = 'r';
-                    break;
-                case knight:
-                    piece = 'n';
-                    break;
-                case bishop:
-                    piece = 'b';
-                    break;
-                case queen:
-                    piece = 'q';
-                    break;
-                case king:
-                    piece = 'k';
-                }
-                if (p.color == black)
-                    piece -= 32;
+                case pawn:   piece_symbol = (p.color == black) ? "♙" : "♟"; break;
+                case knight: piece_symbol = (p.color == black) ? "♘" : "♞"; break;
+                case bishop: piece_symbol = (p.color == black) ? "♗" : "♝"; break;
+                case rook:   piece_symbol = (p.color == black) ? "♖" : "♜"; break;
+                case queen:  piece_symbol = (p.color == black) ? "♕" : "♛"; break;
+                case king:   piece_symbol = (p.color == black) ? "♔" : "♚"; break;
+                default:     piece_symbol = "?"; break;
             }
-            printf(" %c  | ", piece);
+            
+            printf(" %s  │ ", piece_symbol);
+        
         }
         printf(" %d\n", 8 - row);
         if (row < BOARD_SIZE - 1)
@@ -156,7 +145,7 @@ void setPiece(Board *board, int row, int col, Piece piece)
     board->squares[row][col] = piece;
 }
 
-void makemove(Board *board, Move move)
+void makemove(Board *board, Move move, PieceColor* currentcolor)
 {
     Piece piece = board->squares[move.fromrow][move.fromcol];
     if (piece.type == pawn && board->enpassantpossible)
@@ -248,7 +237,7 @@ void makemove(Board *board, Move move)
     board->squares[move.torow][move.tocol].hasmoved = true;
     board->squares[move.fromrow][move.fromcol].type = empty;
     board->squares[move.fromrow][move.fromcol].color = none;
-    board->turn = (board->turn == white) ? black : white;
+    *currentcolor = (*currentcolor == white) ? black : white;
 }
 
 void displaycapturedpieces(Board *board)
@@ -406,9 +395,9 @@ int wouldbeincheck(Board *board, Move move, PieceColor color)
     Piece from = board->squares[move.fromrow][move.fromcol];
     Piece to = board->squares[move.torow][move.tocol];
 
-    board->squares[move.fromrow][move.fromcol] = board->squares[move.torow][move.tocol];
-    board->squares[move.torow][move.tocol].color = none;
-    board->squares[move.torow][move.tocol].type = empty;
+    board->squares[move.torow][move.tocol] = board->squares[move.fromrow][move.fromcol];
+    board->squares[move.fromrow][move.fromcol].color = none;
+    board->squares[move.fromrow][move.fromcol].type = empty;
 
     int ischeck = isincheck(board, color);
 
@@ -486,7 +475,7 @@ int isstalemate(Board *board, PieceColor color)
     return 0;
 }
 
-int getmaterialvalue(Board *board, PieceType type)
+int getmaterialcount(const Board *board, PieceType type)
 {
     switch (type)
     {
@@ -513,11 +502,11 @@ void displaymaterialadvantage(const Board *board)
     int blackcapturedvalues = 0;
     for (int i = 0; i < board->capturedwhitecount; i++)
     {
-        whitecapturedvalues += getmaterialvalue(board, board->capturedwhitepieces[i].type);
+        whitecapturedvalues += getmaterialcount(board, board->capturedwhitepieces[i].type);
     }
     for (int i = 0; i < board->capturedblackcount; i++)
     {
-        blackcapturedvalues += getmaterialvalue(board, board->capturedblackpieces[i].type);
+        blackcapturedvalues += getmaterialcount(board, board->capturedblackpieces[i].type);
     }
     int advantage = blackcapturedvalues - whitecapturedvalues;
     if (advantage > 0)
