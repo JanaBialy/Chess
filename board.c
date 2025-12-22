@@ -108,22 +108,35 @@ void dispboard(Board *board)
                     printf("    │ ");
                 continue;
             }
-            
+
             // Use string pointers for Unicode pieces
-            const char* piece_symbol = "?";
+            const char *piece_symbol = "?";
             switch (p.type)
             {
-                case pawn:   piece_symbol = (p.color == black) ? "♙" : "♟"; break;
-                case knight: piece_symbol = (p.color == black) ? "♘" : "♞"; break;
-                case bishop: piece_symbol = (p.color == black) ? "♗" : "♝"; break;
-                case rook:   piece_symbol = (p.color == black) ? "♖" : "♜"; break;
-                case queen:  piece_symbol = (p.color == black) ? "♕" : "♛"; break;
-                case king:   piece_symbol = (p.color == black) ? "♔" : "♚"; break;
-                default:     piece_symbol = "?"; break;
+            case pawn:
+                piece_symbol = (p.color == black) ? "♙" : "♟";
+                break;
+            case knight:
+                piece_symbol = (p.color == black) ? "♘" : "♞";
+                break;
+            case bishop:
+                piece_symbol = (p.color == black) ? "♗" : "♝";
+                break;
+            case rook:
+                piece_symbol = (p.color == black) ? "♖" : "♜";
+                break;
+            case queen:
+                piece_symbol = (p.color == black) ? "♕" : "♛";
+                break;
+            case king:
+                piece_symbol = (p.color == black) ? "♔" : "♚";
+                break;
+            default:
+                piece_symbol = "?";
+                break;
             }
-            
+
             printf(" %s  │ ", piece_symbol);
-        
         }
         printf(" %d\n", 8 - row);
         if (row < BOARD_SIZE - 1)
@@ -145,7 +158,7 @@ void setPiece(Board *board, int row, int col, Piece piece)
     board->squares[row][col] = piece;
 }
 
-void makemove(Board *board, Move move, PieceColor* currentcolor)
+void makemove(Board *board, Move move, PieceColor *currentcolor)
 {
     Piece piece = board->squares[move.fromrow][move.fromcol];
     if (piece.type == pawn && board->enpassantpossible)

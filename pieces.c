@@ -186,7 +186,8 @@ bool isvalidpawnmove(Board *board, int fromrow, int fromcol, int torow, int toco
     {
         if (coldiff == 0)
         {
-            if (board->squares[torow][tocol].type != empty) {
+            if (board->squares[torow][tocol].type != empty)
+            {
                 return false;
             }
             if (rowdiff == -1)
@@ -223,7 +224,8 @@ bool isvalidpawnmove(Board *board, int fromrow, int fromcol, int torow, int toco
     {
         if (coldiff == 0)
         {
-            if (board->squares[torow][tocol].type != empty) {
+            if (board->squares[torow][tocol].type != empty)
+            {
                 return false;
             }
             if (rowdiff == 1)

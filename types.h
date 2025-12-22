@@ -54,11 +54,12 @@ typedef struct
     Board boardstate;
     PieceColor currentturn;
     Move movemade;
-}MoveEntry;
+} MoveEntry;
 
-typedef struct{
+typedef struct
+{
     MoveEntry moves[500];
     int historycount;
     int current;
-}History;
+} History;
 #endif

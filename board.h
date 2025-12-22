@@ -3,15 +3,13 @@
 #define BOARD_SIZE 8
 #include "types.h"
 
-
-
 void initboard(Board *board);
 void dispboard(Board *board);
 void displaycapturedpieces(Board *board);
 void fulldispboard(Board *board);
 Piece getPiece(Board *board, int row, int col);
 void setPiece(Board *board, int row, int col, Piece piece);
-void makemove(Board *board, Move move, PieceColor* currentcolor);
+void makemove(Board *board, Move move, PieceColor *currentcolor);
 Piece getcapturedpiece(Board *board, Move move);
 int issquareattacked(Board *board, int fromrow, int fromcol, PieceColor attackingcolor);
 void findKing(Board *board, PieceColor color, int *kingRow, int *kingCol);
