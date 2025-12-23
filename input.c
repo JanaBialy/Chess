@@ -17,7 +17,7 @@ bool isvaliddestination(const Board *board, int torow, int tocol, PieceColor col
     return true;
 }
 
-Move takeinput(Board *board, PieceColor currentturn)
+Move takeinput(Board *board, PieceColor currentturn ,bool *issave ,bool *isload ,bool *isundo ,bool *isredo ,bool *isquit)
 {
     Move move;
     move.validinput = false;
@@ -26,7 +26,7 @@ Move takeinput(Board *board, PieceColor currentturn)
     char input[50];
     char cleaned[8];
 
-    printf("Enter your move (e.g., E2E4): ");
+    printf("Enter your move (e.g., E2E4) or command (e.g, S,L,U,R,Q): ");
     fgets(input, 50, stdin);
     int j = 0;
     for (int i = 0; input[i] != '\0' && input[i] != '\n'; i++)
@@ -36,6 +36,36 @@ Move takeinput(Board *board, PieceColor currentturn)
     }
     cleaned[j] = '\0';
     int len = strlen(cleaned);
+    if(len == 1)
+    {
+        char command = toupper(input[0]);
+        if(command == 'S')
+        {
+            *issave = true ;
+            return move;
+        }
+        else if (command == 'L')
+        {
+            *isload = true ;
+            return move ;
+        }
+        else if (command == 'U')
+        {
+            *isundo = true ;
+            return move ;
+        }
+        else if (command == 'R')
+        {
+            *isredo = true ;
+            return move ;
+        }
+        else if (command == 'Q')
+        {
+            *isquit = true ;
+            return move ;
+        }
+    }
+
     if (len > 5 || len < 4)
     {
         printf("Invalid input length!\n");
