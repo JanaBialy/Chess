@@ -50,8 +50,8 @@ Move takeinput(Board *board, PieceColor currentturn)
 
     move.fromcol = cleaned[0] - 'A';
     move.tocol = cleaned[2] - 'A';
-    move.fromrow = '8'- cleaned[1] ;
-    move.torow = '8'- cleaned[3];
+    move.fromrow = '8' - cleaned[1];
+    move.torow = '8' - cleaned[3];
 
     if (move.fromcol < 0 || move.fromcol > 7 ||
         move.tocol < 0 || move.tocol > 7 ||
@@ -87,42 +87,67 @@ Move takeinput(Board *board, PieceColor currentturn)
     return move;
 }
 
-bool movevalidation(Board *board, Move move){
+bool movevalidation(Board *board, Move move)
+{
     Piece piece = board->squares[move.fromrow][move.fromcol];
     bool isvalidmove = false;
     switch (piece.type)
     {
-        case pawn:
-            isvalidmove = isvalidpawnmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
-            break;
-        case rook:
-            isvalidmove = isvalidrookmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
-            break;
-        case knight:
-            isvalidmove = isvalidknightmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
-            break;
-        case bishop:
-            isvalidmove = isvalidbishopmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
-            break;
-        case queen:
-            isvalidmove = isvalidqueenmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
-            break;
-        case king:
-            isvalidmove = isvalidkingmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
-            if (!isvalidmove && absolute(move.tocol - move.fromcol) == 2 && move.fromrow == move.torow)
-            {
-                bool kingside = (move.tocol - move.fromcol) == 2;
-                isvalidmove = cancastle(board, piece.color, kingside);
-            }
-            break;
-        default:
-            printf("Invalid piece type!\n");
-            isvalidmove = false;
+    case pawn:
+        isvalidmove = isvalidpawnmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+        if (!isvalidmove)
+        {
+            printf("Invalid pawn move!\n");
+        }
+        break;
+    case rook:
+        isvalidmove = isvalidrookmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+        if (!isvalidmove)
+        {
+            printf("Invalid rook move!\n");
+        }
+        break;
+    case knight:
+        isvalidmove = isvalidknightmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+        if (!isvalidmove)
+        {
+            printf("Invalid knight move!\n");
+        }
+        break;
+    case bishop:
+        isvalidmove = isvalidbishopmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+        if (!isvalidmove)
+        {
+            printf("Invalid bishop move!\n");
+        }
+        break;
+    case queen:
+        isvalidmove = isvalidqueenmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+        if (!isvalidmove)
+        {
+            printf("Invalid queen move!\n");
+        }
+        break;
+    case king:
+        isvalidmove = isvalidkingmove(board, move.fromrow, move.fromcol, move.torow, move.tocol);
+        if (!isvalidmove && absolute(move.tocol - move.fromcol) == 2 && move.fromrow == move.torow)
+        {
+            bool kingside = (move.tocol - move.fromcol) == 2;
+            isvalidmove = cancastle(board, piece.color, kingside);
+        }
+        if (!isvalidmove)
+        {
+            printf("Invalid king move!\n");
+        }
+        break;
+    default:
+        printf("Invalid piece type!\n");
+        isvalidmove = false;
     }
     return isvalidmove;
 }
 
-bool isnotempty( Board *board, Move move)
+bool isnotempty(Board *board, Move move)
 {
     if (board->squares[move.fromrow][move.fromcol].type == empty)
     {

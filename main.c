@@ -42,7 +42,7 @@ int main()
         }
         makemove(&board, move, &currentcolor);
         displaymaterialadvantage(&board);
-        if(isincheck(&board, currentcolor))
+        if (isincheck(&board, currentcolor))
         {
             printf("Check!\n");
         }
@@ -50,7 +50,7 @@ int main()
         {
             gameover = true;
             winner = (currentcolor == white) ? black : white;
-            printf("Checkmate! \n%s wins!\n", (winner == white) ? "White" : "Black");
+            printf("CHECKMATE! %s WINS!\n", (winner == white) ? "White" : "Black");
         }
         else if (isstalemate(&board, currentcolor))
         {
@@ -58,8 +58,7 @@ int main()
             winner = none;
             printf("Stalemate! The game is a draw.\n");
         }
-        
     }
-    
+
     return 0;
 }
