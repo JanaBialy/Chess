@@ -7,10 +7,16 @@
 #include "pieces.h"
 #include "types.h"
 #include "undo.h"
+#include "save.h"
 int main()
 {
     Board board;
     Move move;
+    bool issave = false ;
+    bool isload = false ;
+    bool isundo = false ;
+    bool isredo = false ;
+    bool isquit = false ;
     bool isnotempty_result = false;
     bool validinput_result = false;
     bool gameover = false;
@@ -25,10 +31,31 @@ int main()
         printf("Current turn: %s\n", (currentcolor == white) ? "White" : "Black");
         do
         {
-            move = takeinput(&board, currentcolor);
+            move = takeinput(&board, currentcolor,issave ,isload, isundo ,isredo ,isquit);
             isnotempty_result = isnotempty(&board, move);
             validinput_result = move.validinput && isnotempty_result;
-        } while (!validinput_result);
+        } while (!validinput_result || issave || isload || isundo || isredo || isquit);
+        if(issave)
+        {
+            savegame(&board,currentcolor);
+        }
+        else if(isload)
+        {
+            loadgame(&board,&currentcolor);
+        }
+        else if(isundo)
+        {
+            
+        }  
+        else if(isredo)
+        {
+           
+        }
+        else if(isquit)
+        {
+            printf("GOOD BYE : ");
+            return 0;
+        }
         bool isvalidmove = movevalidation(&board, move);
         if (isvalidmove && wouldbeincheck(&board, move, currentcolor))
         {
@@ -59,6 +86,5 @@ int main()
             printf("Stalemate! The game is a draw.\n");
         }
     }
-
     return 0;
 }
