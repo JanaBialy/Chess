@@ -26,7 +26,7 @@ Move takeinput(Board *board, PieceColor currentturn ,bool *issave ,bool *isload 
     char input[50];
     char cleaned[8];
 
-    printf("Enter your move (e.g., E2E4) or command (e.g, S,L,U,R,Q): ");
+    printf("Enter your move (e.g., E2E4) or command (S,L,U,R,Q): ");
     fgets(input, 50, stdin);
     int j = 0;
     for (int i = 0; input[i] != '\0' && input[i] != '\n'; i++)
