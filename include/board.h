@@ -18,7 +18,7 @@ int wouldbeincheck(Board *board, Move move, PieceColor color);
 int hasvalidmoves(Board *board, PieceColor color);
 int ischeckmate(Board *board, PieceColor color);
 int isstalemate(Board *board, PieceColor color);
-int getmaterialcount(const Board *board, PieceType type);
+int getmaterialcount(PieceType type);
 void displaymaterialadvantage(const Board *board);
 
 extern Board board;
