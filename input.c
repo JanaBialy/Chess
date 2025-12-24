@@ -38,7 +38,7 @@ Move takeinput(Board *board, PieceColor currentturn ,bool *issave ,bool *isload 
     int len = strlen(cleaned);
     if(len == 1)
     {
-        char command = toupper(input[0]);
+        char command = toupper(cleaned[0]);
         if(command == 'S')
         {
             *issave = true ;

@@ -8,6 +8,7 @@
 #include "types.h"
 #include "undo.h"
 #include "save.h"
+
 int main()
 {
     Board board;
@@ -22,40 +23,56 @@ int main()
     bool gameover = false;
     PieceColor winner = none;
     PieceColor currentcolor = white;
+    History history;
+    inithistory(&history);
     printf("Welcome to Chess!\n");
     printf("===============================================\n");
     initboard(&board);
+    savestate(&board,currentcolor , move , &history);
     while (!gameover)
     {
         fulldispboard(&board);
         printf("Current turn: %s\n", (currentcolor == white) ? "White" : "Black");
         do
         {
-            move = takeinput(&board, currentcolor,issave ,isload, isundo ,isredo ,isquit);
+            move = takeinput(&board, currentcolor,&issave ,&isload, &isundo ,&isredo ,&isquit);
+            if (issave || isload || isundo || isredo || isquit){
+                break ;
+            }
             isnotempty_result = isnotempty(&board, move);
             validinput_result = move.validinput && isnotempty_result;
-        } while (!validinput_result || issave || isload || isundo || isredo || isquit);
+        } while (!validinput_result);
         if(issave)
         {
             savegame(&board,currentcolor);
+            issave = false ;
+            continue;
         }
         else if(isload)
         {
             loadgame(&board,&currentcolor);
+            isload = false ;
+            continue;
         }
         else if(isundo)
         {
-            
+            undomove(&board,&currentcolor , &history);
+            isundo = false ;
+            continue;
         }  
         else if(isredo)
         {
-           
+            redomove(&board,&currentcolor , &history);
+            isredo = false ;
+            continue;
         }
         else if(isquit)
         {
-            printf("GOOD BYE : ");
+            printf("GOODBYE :) ");
+            isquit = false ;
             return 0;
         }
+        isundo = isredo = isload = issave = isquit = false ;
         bool isvalidmove = movevalidation(&board, move);
         if (isvalidmove && wouldbeincheck(&board, move, currentcolor))
         {
@@ -85,6 +102,7 @@ int main()
             winner = none;
             printf("Stalemate! The game is a draw.\n");
         }
+        savestate(&board,currentcolor , move , &history);
     }
     return 0;
 }

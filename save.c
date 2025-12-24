@@ -18,7 +18,7 @@ void savegame(Board*board , PieceColor currentturn)
         printf("Error : cannot create file '%s'\n",fullname);
         return  ;
     }
-    fwrite(currentturn , sizeof(PieceColor) , 1 , file);
+    fwrite(&currentturn , sizeof(PieceColor) , 1 , file);
     fwrite(board , sizeof(Board) , 1 , file);
     fclose(file);
     printf("GAME SAVED TO '%s'\n",fullname);
