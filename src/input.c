@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
-#include "input.h"
+#include  "input.h"
 #include "board.h"
 #include "pieces.h"
 #include "types.h"
@@ -179,7 +179,7 @@ bool movevalidation(Board *board, Move move)
 
 bool isnotempty(Board *board, Move move)
 {
-    if (board->squares[move.fromrow][move.fromcol].type == empty)
+    if (board->squares[move.fromrow][move.fromcol].type == empty&&move.validinput)
     {
         printf("This square is empty!\n");
         return false;

@@ -280,6 +280,8 @@ void displaycapturedpieces(Board *board)
         case king:
             piece = 'k';
             break;
+        case empty:
+            continue;
         default:
             continue;
         }
@@ -310,6 +312,8 @@ void displaycapturedpieces(Board *board)
         case king:
             piece = 'K';
             break;
+        case empty:
+            continue;
         default:
             continue;
         }
@@ -463,6 +467,8 @@ int hasvalidmoves(Board *board, PieceColor color)
                     case king:
                         validmove = isvalidkingmove(board, i, j, dr, dc);
                         break;
+                    default:
+                        continue;
                     }
                     if (validmove)
                     {
@@ -489,7 +495,7 @@ int isstalemate(Board *board, PieceColor color)
     return 0;
 }
 
-int getmaterialcount(const Board *board, PieceType type)
+int getmaterialcount(PieceType type)
 {
     switch (type)
     {
@@ -516,11 +522,11 @@ void displaymaterialadvantage(const Board *board)
     int blackcapturedvalues = 0;
     for (int i = 0; i < board->capturedwhitecount; i++)
     {
-        whitecapturedvalues += getmaterialcount(board, board->capturedwhitepieces[i].type);
+        whitecapturedvalues += getmaterialcount(board->capturedwhitepieces[i].type);
     }
     for (int i = 0; i < board->capturedblackcount; i++)
     {
-        blackcapturedvalues += getmaterialcount(board, board->capturedblackpieces[i].type);
+        blackcapturedvalues += getmaterialcount(board->capturedblackpieces[i].type);
     }
     int advantage = blackcapturedvalues - whitecapturedvalues;
     if (advantage > 0)
