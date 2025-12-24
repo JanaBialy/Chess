@@ -259,65 +259,62 @@ void displaycapturedpieces(Board *board)
     for (int i = 0; i < board->capturedwhitecount; i++)
     {
         Piece p = board->capturedwhitepieces[i];
-        char piece = ' ';
         switch (p.type)
         {
         case pawn:
-            piece = 'p';
+            printf("♟ ");
             break;
         case rook:
-            piece = 'r';
+            printf("♜ ");
             break;
         case knight:
-            piece = 'n';
+            printf("♞ ");
             break;
         case bishop:
-            piece = 'b';
+            printf("♝ ");
             break;
         case queen:
-            piece = 'q';
+            printf("♛ ");
             break;
         case king:
-            piece = 'k';
+            printf("♚ ");
             break;
         case empty:
             continue;
         default:
             continue;
         }
-        printf("%c ", piece);
     }
     printf("\nCaptured Black Pieces: ");
     for (int i = 0; i < board->capturedblackcount; i++)
     {
         Piece p = board->capturedblackpieces[i];
-        char piece = ' ';
         switch (p.type)
         {
         case pawn:
-            piece = 'P';
+            printf("♙ ");
             break;
         case rook:
-            piece = 'R';
+            printf("♖ ");
             break;
         case knight:
-            piece = 'N';
+            printf("♘ ");
             break;
         case bishop:
-            piece = 'B';
+            printf("♗ ");
             break;
         case queen:
-            piece = 'Q';
+            printf("♕ ");
             break;
         case king:
-            piece = 'K';
+            printf("♔ ");
             break;
         case empty:
             continue;
         default:
             continue;
         }
-        printf("%c ", piece);
+        
     }
     printf("\n");
 }

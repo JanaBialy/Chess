@@ -108,10 +108,43 @@ Move takeinput(Board *board, PieceColor currentturn ,bool *issave ,bool *isload 
         printf("Invalid destination: cannot capture own piece!\n");
         return move;
     }
-    if (board->squares[move.fromrow][move.fromcol].color != currentturn)
+    if (board->squares[move.fromrow][move.fromcol].color != currentturn && board->squares[move.fromrow][move.fromcol].type != empty)
     {
         printf("It's not your turn!\n");
         return move;
+    }
+    if (len == 4)
+    {
+        Piece piece = board->squares[move.fromrow][move.fromcol];
+        if (piece.type == pawn && move.torow == (piece.color == white ? 0 : 7)){
+            while (move.promotion=='\0')
+            {
+                printf("Please choose a promotion piece (Q, R, B, N):");
+                char promo[10];
+                fgets(promo,10,stdin);
+                int k = 0;
+                char cleanedpromo[10];
+                for (int i = 0; promo[i] != '\0' && promo[i] != '\n'; i++)
+                {
+                    if (!isspace(promo[i]))
+                    cleanedpromo[k++] = toupper(promo[i]);
+                }
+                cleanedpromo[k] = '\0';
+                int lenpromo = strlen(cleanedpromo);
+                if (lenpromo != 1)
+                {
+                    printf("Invalid promotion input length!\n");
+                    continue;
+                }
+                move.promotion = toupper(cleanedpromo[0]);
+                if (move.promotion != 'Q' && move.promotion != 'R' &&
+                    move.promotion != 'B' && move.promotion != 'N')
+                {
+                    printf("Invalid Promotion piece !\n");
+                    move.promotion = '\0';
+                }
+            }
+        }
     }
     move.validinput = true;
     return move;
@@ -179,7 +212,7 @@ bool movevalidation(Board *board, Move move)
 
 bool isnotempty(Board *board, Move move)
 {
-    if (board->squares[move.fromrow][move.fromcol].type == empty&&move.validinput)
+    if (board->squares[move.fromrow][move.fromcol].type == empty && move.validinput)
     {
         printf("This square is empty!\n");
         return false;

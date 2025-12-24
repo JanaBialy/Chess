@@ -26,7 +26,7 @@ int main()
     History history;
     inithistory(&history);
     printf("Welcome to Chess!\n");
-    printf("===============================================\n");
+    printf("=====================================================\n");
     initboard(&board);
     savestate(&board,currentcolor , move , &history);
     while (!gameover)
@@ -102,6 +102,7 @@ int main()
             winner = none;
             printf("Stalemate! The game is a draw.\n");
         }
+        printf("=====================================================\n");
         savestate(&board,currentcolor , move , &history);
     }
     return 0;
