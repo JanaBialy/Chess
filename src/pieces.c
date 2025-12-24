@@ -290,7 +290,8 @@ bool cancastle(Board *board, PieceColor color, bool kingside)
         printf("Cannot castle: King is in check!\n");
         return false;
     }
-    if (issquareattacked(board, row, 5, (color == white) ? black : white) || issquareattacked(board, row, 6, (color == white) ? black : white))
+    PieceColor opponent = (color == white) ? black : white;
+    if (issquareattacked(board, row, 5, opponent) || issquareattacked(board, row, 6, opponent))
     {
         printf("Cannot castle: Squares king passes through are under attack!\n");
         return false;
