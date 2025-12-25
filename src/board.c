@@ -525,14 +525,14 @@ void displaymaterialadvantage(const Board *board)
     {
         blackcapturedvalues += getmaterialcount(board->capturedblackpieces[i].type);
     }
-    int advantage = blackcapturedvalues - whitecapturedvalues;
-    if (advantage > 0)
+    int materialdifference = blackcapturedvalues - whitecapturedvalues;
+    if (materialdifference> 0)
     {
-        printf("Black has a material advantage of %d points.\n", advantage);
+        printf("White has a material advantage of %d points.\n", materialdifference);
     }
-    else if (advantage < 0)
+    else if (materialdifference < 0)
     {
-        printf("White has a material advantage of %d points.\n", -advantage);
+        printf("Black has a material advantage of %d points.\n", materialdifference);
     }
     else
     {

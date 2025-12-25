@@ -104,6 +104,30 @@ int main()
         }
         printf("=====================================================\n");
         savestate(&board,currentcolor , move , &history);
+        if (gameover == true)
+        {
+            printf("Do you want to (save,undo) : ");
+            char lastcommand[20] ;
+            char cleanedver[10] ;
+            fgets(lastcommand,20,stdin);
+            int j = 0;
+            for (int i = 0; lastcommand[i] != '\0' && lastcommand[i] != '\n'; i++)
+            {
+                if (!isspace( lastcommand[i]))
+                    cleanedver[j++] = toupper(lastcommand[i]);
+            }
+            cleanedver[j] = '\0';
+            if (cleanedver[0] == 'S')
+            {
+                savegame(&board,currentcolor);
+            }
+            else if (cleanedver[0] == 'U')
+            {
+                gameover=true ;
+                undomove(&board,&currentcolor,&history);
+                continue;
+            }
+        }
     }
     return 0;
 }
