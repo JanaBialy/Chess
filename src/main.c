@@ -61,6 +61,7 @@ int main()
         else if(isload)
         {
             loadgame(&board,&currentcolor);
+            savestate(&board,currentcolor , move , &history);
             isload = false ;
             continue;
         }
