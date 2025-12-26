@@ -7,6 +7,11 @@
 #include "pieces.h"
 #include "types.h"
 
+void clearinputbuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 bool isvaliddestination(const Board *board, int torow, int tocol, PieceColor color)
 {
     Piece destpiece = board->squares[torow][tocol];
@@ -29,7 +34,7 @@ Move takeinput(Board *board, PieceColor currentturn ,bool *issave ,bool *isload 
     printf("Enter your move (e.g., E2E4) or command (S,L,U,R,Q): ");
     fgets(input, 50, stdin);
     int j = 0;
-    for (int i = 0; input[i] != '\0' && input[i] != '\n'; i++)
+    for (int i = 0; input[i] != '\0' && input[i] != '\n' && i<50 && j<7; i++)
     {
         if (!isspace(input[i]))
             cleaned[j++] = toupper(input[i]);
