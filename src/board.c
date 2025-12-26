@@ -109,34 +109,32 @@ void dispboard(Board *board)
                 continue;
             }
 
-            // Use string pointers for Unicode pieces
-            const char *piece_symbol = "?";
+            const char *piecesymbol = " ";
             switch (p.type)
             {
             case pawn:
-                piece_symbol = (p.color == black) ? "♙" : "♟";
+                piecesymbol = (p.color == black) ? "♙" : "♟";
                 break;
             case knight:
-                piece_symbol = (p.color == black) ? "♘" : "♞";
+                piecesymbol = (p.color == black) ? "♘" : "♞";
                 break;
             case bishop:
-                piece_symbol = (p.color == black) ? "♗" : "♝";
+                piecesymbol = (p.color == black) ? "♗" : "♝";
                 break;
             case rook:
-                piece_symbol = (p.color == black) ? "♖" : "♜";
+                piecesymbol = (p.color == black) ? "♖" : "♜";
                 break;
             case queen:
-                piece_symbol = (p.color == black) ? "♕" : "♛";
+                piecesymbol = (p.color == black) ? "♕" : "♛";
                 break;
             case king:
-                piece_symbol = (p.color == black) ? "♔" : "♚";
+                piecesymbol = (p.color == black) ? "♔" : "♚";
                 break;
             default:
-                piece_symbol = "?";
                 break;
             }
 
-            printf(" %s  │ ", piece_symbol);
+            printf(" %s  │ ", piecesymbol);
         }
         printf(" %d\n", 8 - row);
         if (row < BOARD_SIZE - 1)
@@ -212,7 +210,7 @@ void makemove(Board *board, Move move, PieceColor *currentcolor)
             board->capturedblackpieces[board->capturedblackcount++] = capturedpiece;
         }
     }
-    if (piece.type == pawn && move.promotion != '\0')
+    if (piece.type == pawn && move.promotion != '\0' && move.torow == (piece.color == white ? 0 : 7))
     {
         if (move.promotion == 'Q')
             piece.type = queen;
