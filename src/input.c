@@ -123,7 +123,7 @@ Move takeinput(Board *board, PieceColor currentturn, bool *issave, bool *isload,
     }
     if (!isvaliddestination(board, move.torow, move.tocol, currentturn))
     {
-        printf("Invalid destination: cannot capture own piece!\n");
+        printf("Invalid destination!\n");
         return move;
     }
     if (board->squares[move.fromrow][move.fromcol].color != currentturn && board->squares[move.fromrow][move.fromcol].type != empty)
