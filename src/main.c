@@ -2,12 +2,14 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "input.h"
 #include "board.h"
 #include "pieces.h"
 #include "types.h"
 #include "undo.h"
 #include "save.h"
+#include "timer.h"
 
 int main()
 {
@@ -27,14 +29,17 @@ int main()
     inithistory(&history);
     printf("Welcome to Chess!\n");
     printf("=====================================================\n");
+    Gameclock clock = setuptimermenu();
     initboard(&board);
     savestate(&board,currentcolor , move , &history);
     while (!gameover)
     {
         fulldispboard(&board);
+        displaytimer(&clock);
         printf("Current turn: %s\n", (currentcolor == white) ? "White" : "Black");
         do
         {
+            startmove(&clock);
             move = takeinput(&board, currentcolor,&issave ,&isload, &isundo ,&isredo ,&isquit);
             if (issave || isload || isundo || isredo || isquit){
                 break ;
@@ -84,8 +89,12 @@ int main()
             printf("Invalid move!\n");
             continue;
         }
+        if (!endmove(&clock, currentcolor))
+        {
+            gameover = true;
+            continue;
+        }
         makemove(&board, move, &currentcolor);
-        displaymaterialadvantage(&board);
         if (isincheck(&board, currentcolor))
         {
             printf("Check!\n");
@@ -103,6 +112,7 @@ int main()
             printf("Stalemate! The game is a draw.\n");
         }
         printf("=====================================================\n");
+        displaymaterialadvantage(&board);
         savestate(&board,currentcolor , move , &history);
         if (gameover == true)
         {
@@ -123,7 +133,7 @@ int main()
             }
             else if (cleanedver[0] == 'U')
             {
-                gameover=true ;
+                gameover=false ;
                 undomove(&board,&currentcolor,&history);
                 continue;
             }

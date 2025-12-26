@@ -1,6 +1,7 @@
 #ifndef Types_H
 #define Types_H
 #include <stdbool.h>
+#include <time.h>
 typedef enum
 {
     empty,
@@ -62,4 +63,11 @@ typedef struct
     int historycount;
     int current;
 } History;
+
+typedef struct {
+    double whitetime;
+    double blacktime;
+    clock_t movestart;
+    bool enabled;
+} Gameclock;
 #endif

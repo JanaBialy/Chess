@@ -532,7 +532,7 @@ void displaymaterialadvantage(const Board *board)
     }
     else if (materialdifference < 0)
     {
-        printf("Black has a material advantage of %d points.\n", materialdifference);
+        printf("Black has a material advantage of %d points.\n", -materialdifference);
     }
     else
     {
