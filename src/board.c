@@ -212,7 +212,7 @@ void makemove(Board *board, Move move, PieceColor *currentcolor)
             board->capturedblackpieces[board->capturedblackcount++] = capturedpiece;
         }
     }
-    if (piece.type == pawn && move.promotion != '\0')
+    if (piece.type == pawn && move.promotion != '\0' && move.torow == (piece.color == white ? 0 : 7))
     {
         if (move.promotion == 'Q')
             piece.type = queen;
