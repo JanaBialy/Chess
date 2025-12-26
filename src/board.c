@@ -312,7 +312,6 @@ void displaycapturedpieces(Board *board)
         default:
             continue;
         }
-        
     }
     printf("\n");
 }
@@ -524,7 +523,7 @@ void displaymaterialadvantage(const Board *board)
         blackcapturedvalues += getmaterialcount(board->capturedblackpieces[i].type);
     }
     int materialdifference = blackcapturedvalues - whitecapturedvalues;
-    if (materialdifference> 0)
+    if (materialdifference > 0)
     {
         printf("White has a material advantage of %d points.\n", materialdifference);
     }

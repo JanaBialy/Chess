@@ -64,7 +64,8 @@ typedef struct
     int current;
 } History;
 
-typedef struct {
+typedef struct
+{
     double whitetime;
     double blacktime;
     clock_t movestart;
