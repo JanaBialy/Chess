@@ -14,6 +14,10 @@ void inithistory(History *history)
 }
 void savestate(Board *board, PieceColor turn, Move move, History *history)
 {
+    if (history->current < history->historycount - 1)
+    {
+        history->historycount = history->current + 1;
+    }
     if (history->historycount >= 500)
     {
         for (int i = 0; i < 500 - 1; i++)
@@ -23,10 +27,6 @@ void savestate(Board *board, PieceColor turn, Move move, History *history)
         history->historycount--;
         history->current--;
         printf("Note: History limit reached . Oldest move removed.\n");
-    }
-    if (history->current < history->historycount - 1)
-    {
-        history->historycount = history->current + 1;
     }
     history->current = history->historycount;
     MoveEntry *entry = &history->moves[history->current];
@@ -34,16 +34,6 @@ void savestate(Board *board, PieceColor turn, Move move, History *history)
     entry->currentturn = turn;
     entry->movemade = move;
     history->historycount++;
-    if (history->historycount >= 500)
-    {
-        for (int i = 0; i < 500 - 1; i++)
-        {
-            history->moves[i] = history->moves[i + 1];
-        }
-        history->historycount--;
-        history->current--;
-        printf("Note: History limit reached . Oldest move removed.\n");
-    }
 }
 bool undomove(Board *board, PieceColor *turn, History *history)
 {
@@ -53,13 +43,6 @@ bool undomove(Board *board, PieceColor *turn, History *history)
         return false;
     }
     history->current--;
-
-    if (history->current < 0 || history->current >= history->historycount)
-    {
-        printf("ERROR: History index out of bounds!\n");
-        history->current = 0;
-        return false;
-    }
 
     MoveEntry *entry = &history->moves[history->current];
     *board = entry->boardstate;
@@ -83,13 +66,4 @@ bool redomove(Board *board, PieceColor *turn, History *history)
     printf("Move redone.\n");
     printf("Moves in history: %d\n", history->current);
     return true;
-}
-
-int canundo(History *history)
-{
-    return (history->current > 0);
-}
-int canredo(History *history)
-{
-    return (history->current < history->historycount - 1);
 }

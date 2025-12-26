@@ -41,7 +41,6 @@ void savegame(Board *board, PieceColor currentturn)
         while ((c = getchar()) != '\n' && c != EOF)
             ;
     }
-    filename[strcspn(filename, "\n")] = 0;
     char fullname[200];
     snprintf(fullname, sizeof(fullname), "%s/%s.chess", foldername, filename);
     FILE *file = fopen(fullname, "wb");
