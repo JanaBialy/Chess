@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
-#include "types.h" 
+#include "types.h"
 #include "timer.h"
 #include "input.h"
 
@@ -25,7 +25,7 @@ void startmove(Gameclock *clk)
 bool endmove(Gameclock *clk, PieceColor color)
 {
     if (!clk->enabled)
-    return true;
+        return true;
 
     clock_t now = clock();
     double elapsed = ((double)(now - clk->movestart)) / CLOCKS_PER_SEC;
@@ -39,7 +39,8 @@ bool endmove(Gameclock *clk, PieceColor color)
             return false;
         }
     }
-    else {
+    else
+    {
         clk->blacktime -= elapsed;
         if (clk->blacktime <= 0.0)
         {
@@ -66,7 +67,7 @@ Gameclock setuptimermenu(void)
     Gameclock clk;
     clk.enabled = false;
     char input[20];
-    char choice='\0';
+    char choice = '\0';
     while (choice != 'Y' && choice != 'N')
     {
         printf("Please enter Y or N to enable timer: ");
@@ -77,11 +78,13 @@ Gameclock setuptimermenu(void)
             return clk;
         }
         input[strcspn(input, "\n")] = '\0';
-        if (strlen(input) == sizeof(input) - 1) {
+        if (strlen(input) == sizeof(input) - 1)
+        {
             int c;
-            while ((c = getchar()) != '\n' && c != EOF);
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
         }
-        for (int i = 0; input[i] != '\0' && input[i] != '\n'&& i<20; i++)
+        for (int i = 0; input[i] != '\0' && input[i] != '\n' && i < 20; i++)
         {
             if (!isspace(input[i]))
             {
@@ -95,8 +98,8 @@ Gameclock setuptimermenu(void)
     {
         clk.enabled = true;
         printf("Enter the time in minutes: ");
-        double minutes=0.0;
-        while(minutes <= 0.0)
+        double minutes = 0.0;
+        while (minutes <= 0.0)
         {
             scanf("%lf", &minutes);
             clearinputbuffer();

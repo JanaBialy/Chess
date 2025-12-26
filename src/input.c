@@ -2,14 +2,16 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
-#include  "input.h"
+#include "input.h"
 #include "board.h"
 #include "pieces.h"
 #include "types.h"
 
-void clearinputbuffer() {
+void clearinputbuffer()
+{
     int c;
-    while ((c = getchar()) != '\n' && c != EOF);
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
 }
 
 bool isvaliddestination(const Board *board, int torow, int tocol, PieceColor color)
@@ -22,7 +24,7 @@ bool isvaliddestination(const Board *board, int torow, int tocol, PieceColor col
     return true;
 }
 
-Move takeinput(Board *board, PieceColor currentturn ,bool *issave ,bool *isload ,bool *isundo ,bool *isredo ,bool *isquit)
+Move takeinput(Board *board, PieceColor currentturn, bool *issave, bool *isload, bool *isundo, bool *isredo, bool *isquit)
 {
     Move move;
     move.validinput = false;
@@ -32,50 +34,53 @@ Move takeinput(Board *board, PieceColor currentturn ,bool *issave ,bool *isload 
     char cleaned[8];
 
     printf("Enter your move (e.g., E2E4) or command (S,L,U,R,Q): ");
-    if (!fgets(input, sizeof(input), stdin)) {
+    if (!fgets(input, sizeof(input), stdin))
+    {
         *isquit = true;
         return move;
     }
     input[strcspn(input, "\n")] = '\0';
-    if (strlen(input) == sizeof(input) - 1) {
+    if (strlen(input) == sizeof(input) - 1)
+    {
         int c;
-        while ((c = getchar()) != '\n' && c != EOF);
+        while ((c = getchar()) != '\n' && c != EOF)
+            ;
     }
     int j = 0;
-    for (int i = 0; input[i] != '\0' && input[i] != '\n' && i<50 && j<7; i++)
+    for (int i = 0; input[i] != '\0' && input[i] != '\n' && i < 50 && j < 7; i++)
     {
         if (!isspace(input[i]))
             cleaned[j++] = toupper(input[i]);
     }
     cleaned[j] = '\0';
     int len = strlen(cleaned);
-    if(len == 1)
+    if (len == 1)
     {
         char command = toupper(cleaned[0]);
-        if(command == 'S')
+        if (command == 'S')
         {
-            *issave = true ;
+            *issave = true;
             return move;
         }
         else if (command == 'L')
         {
-            *isload = true ;
-            return move ;
+            *isload = true;
+            return move;
         }
         else if (command == 'U')
         {
-            *isundo = true ;
-            return move ;
+            *isundo = true;
+            return move;
         }
         else if (command == 'R')
         {
-            *isredo = true ;
-            return move ;
+            *isredo = true;
+            return move;
         }
         else if (command == 'Q')
         {
-            *isquit = true ;
-            return move ;
+            *isquit = true;
+            return move;
         }
     }
 
@@ -129,26 +134,30 @@ Move takeinput(Board *board, PieceColor currentturn ,bool *issave ,bool *isload 
     if (len == 4)
     {
         Piece piece = board->squares[move.fromrow][move.fromcol];
-        if (piece.type == pawn && move.torow == (piece.color == white ? 0 : 7)){
-            while (move.promotion=='\0')
+        if (piece.type == pawn && move.torow == (piece.color == white ? 0 : 7))
+        {
+            while (move.promotion == '\0')
             {
                 printf("Please choose a promotion piece (Q, R, B, N):");
                 char promo[10];
-                if (!fgets(promo, sizeof(promo), stdin)) {
+                if (!fgets(promo, sizeof(promo), stdin))
+                {
                     *isquit = true;
                     return move;
                 }
                 promo[strcspn(promo, "\n")] = '\0';
-                if (strlen(promo) == sizeof(promo) - 1) {
+                if (strlen(promo) == sizeof(promo) - 1)
+                {
                     int c;
-                    while ((c = getchar()) != '\n' && c != EOF);
-               }
+                    while ((c = getchar()) != '\n' && c != EOF)
+                        ;
+                }
                 int k = 0;
                 char cleanedpromo[10];
                 for (int i = 0; promo[i] != '\0' && promo[i] != '\n'; i++)
                 {
                     if (!isspace(promo[i]))
-                    cleanedpromo[k++] = toupper(promo[i]);
+                        cleanedpromo[k++] = toupper(promo[i]);
                 }
                 cleanedpromo[k] = '\0';
                 int lenpromo = strlen(cleanedpromo);
