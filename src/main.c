@@ -35,6 +35,7 @@ int main()
     while (!gameover)
     {
         fulldispboard(&board);
+        printf("=====================================================\n");
         displaytimer(&clock);
         printf("Current turn: %s\n", (currentcolor == white) ? "White" : "Black");
         do
@@ -117,14 +118,14 @@ int main()
             winner = none;
             printf("Stalemate! The game is a draw.\n");
         }
-        printf("=====================================================\n");
         displaymaterialadvantage(&board);
         savestate(&board,currentcolor , move , &history);
         if (gameover == true)
         {
-            printf("Do you want to (save(S),undo(U)): ");
+            fulldispboard(&board);
+            printf("Do you want to (save(S),undo(U),quit(Q)): ");
             char lastcommand[20] ;
-            char cleanedver[10] ;
+            char cleanedver[10] = "\0" ;
             if (!fgets(lastcommand, sizeof(lastcommand), stdin)) {
                 isquit = true;
                 return 0;
@@ -132,8 +133,8 @@ int main()
             lastcommand[strcspn(lastcommand, "\n")] = '\0';
             if (strlen(lastcommand) == sizeof(lastcommand) - 1) {
                 int c;
-            while ((c = getchar()) != '\n' && c != EOF);
-    }
+                while ((c = getchar()) != '\n' && c != EOF);
+            }
             int j = 0;
             for (int i = 0; lastcommand[i] != '\0' && lastcommand[i] != '\n'; i++)
             {

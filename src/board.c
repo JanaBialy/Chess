@@ -534,6 +534,6 @@ void displaymaterialadvantage(const Board *board)
     }
     else
     {
-        printf("Equal no advantage!\n");
+        printf("Neither white nor black has an advantage.\n");
     }
 }
