@@ -44,8 +44,13 @@ int main()
             if (issave || isload || isundo || isredo || isquit){
                 break ;
             }
-            isnotempty_result = isnotempty(&board, move);
-            validinput_result = move.validinput && isnotempty_result;
+            if (move.validinput){
+                isnotempty_result = isnotempty(&board, move);
+                validinput_result = move.validinput && isnotempty_result;
+            }
+            else{
+                validinput_result = false ;
+            }
         } while (!validinput_result);
         if(issave)
         {
@@ -73,7 +78,7 @@ int main()
         }
         else if(isquit)
         {
-            printf("GOODBYE :) ");
+            printf("GOODBYE :) \n");
             isquit = false ;
             return 0;
         }
@@ -119,7 +124,15 @@ int main()
             printf("Do you want to (save,undo) : ");
             char lastcommand[20] ;
             char cleanedver[10] ;
-            fgets(lastcommand,20,stdin);
+            if (!fgets(lastcommand, sizeof(lastcommand), stdin)) {
+                isquit = true;
+                return 0;
+            }
+            lastcommand[strcspn(lastcommand, "\n")] = '\0';
+            if (strlen(lastcommand) == sizeof(lastcommand) - 1) {
+                int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+    }
             int j = 0;
             for (int i = 0; lastcommand[i] != '\0' && lastcommand[i] != '\n'; i++)
             {

@@ -29,7 +29,15 @@ void savegame(Board*board , PieceColor currentturn)
     savesfolder(foldername);
     char filename[100];
     printf("Enter filename to save (without extension): ");
-    fgets(filename,100,stdin);
+    if (!fgets(filename, sizeof(filename), stdin)) {
+        printf("Error : cannot read filename\n");
+        return  ;
+    }
+    filename[strcspn(filename, "\n")] = '\0';
+    if (strlen(filename) == sizeof(filename) - 1) {
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
+    }
     filename[strcspn(filename, "\n")]=0;
     char fullname[200];
     snprintf(fullname, sizeof(fullname),"%s/%s.chess" ,foldername ,filename);
@@ -50,8 +58,15 @@ int loadgame(Board*board , PieceColor *currentturn)
     const char *foldername = "savedgames";
     char filename[100];
     printf("Enter filename to load (without extension): ");
-    fgets(filename,100,stdin);
-    filename[strcspn(filename, "\n")]=0;
+    if (!fgets(filename, sizeof(filename), stdin)) {
+        printf("Error : cannot read filename\n");
+        return 0;
+    }
+    filename[strcspn(filename, "\n")] = '\0';
+    if (strlen(filename) == sizeof(filename) - 1) {
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
+    }
     char fullname[200];
     snprintf(fullname, sizeof(fullname),"%s/%s.chess" ,foldername ,filename);
     FILE *file = fopen(fullname,"rb");

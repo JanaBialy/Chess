@@ -32,11 +32,15 @@ Move takeinput(Board *board, PieceColor currentturn ,bool *issave ,bool *isload 
     char cleaned[8];
 
     printf("Enter your move (e.g., E2E4) or command (S,L,U,R,Q): ");
-    fgets(input, 50, stdin);
-    input[49]='\0';
-    input[48]= '\n';
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF);
+    if (!fgets(input, sizeof(input), stdin)) {
+        *isquit = true;
+        return move;
+    }
+    input[strcspn(input, "\n")] = '\0';
+    if (strlen(input) == sizeof(input) - 1) {
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
+    }
     int j = 0;
     for (int i = 0; input[i] != '\0' && input[i] != '\n' && i<50 && j<7; i++)
     {
@@ -130,7 +134,15 @@ Move takeinput(Board *board, PieceColor currentturn ,bool *issave ,bool *isload 
             {
                 printf("Please choose a promotion piece (Q, R, B, N):");
                 char promo[10];
-                fgets(promo,10,stdin);
+                if (!fgets(promo, sizeof(promo), stdin)) {
+                    *isquit = true;
+                    return move;
+                }
+                promo[strcspn(promo, "\n")] = '\0';
+                if (strlen(promo) == sizeof(promo) - 1) {
+                    int c;
+                    while ((c = getchar()) != '\n' && c != EOF);
+               }
                 int k = 0;
                 char cleanedpromo[10];
                 for (int i = 0; promo[i] != '\0' && promo[i] != '\n'; i++)

@@ -76,6 +76,11 @@ Gameclock setuptimermenu(void)
             clk.enabled = false;
             return clk;
         }
+        input[strcspn(input, "\n")] = '\0';
+        if (strlen(input) == sizeof(input) - 1) {
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+        }
         for (int i = 0; input[i] != '\0' && input[i] != '\n'&& i<20; i++)
         {
             if (!isspace(input[i]))
@@ -90,9 +95,16 @@ Gameclock setuptimermenu(void)
     {
         clk.enabled = true;
         printf("Enter the time in minutes: ");
-        double minutes;
-        scanf("%lf", &minutes);
-        clearinputbuffer();
+        double minutes=0.0;
+        while(minutes <= 0.0)
+        {
+            scanf("%lf", &minutes);
+            clearinputbuffer();
+            if (minutes <= 0.0)
+            {
+                printf("Please enter a positive number for minutes: ");
+            }
+        }
         initclock(&clk, minutes);
         printf("Timer set to %.2f minutes per player.\n", minutes);
     }
