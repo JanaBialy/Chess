@@ -121,7 +121,7 @@ int main()
         savestate(&board,currentcolor , move , &history);
         if (gameover == true)
         {
-            printf("Do you want to (save,undo) : ");
+            printf("Do you want to (save(S),undo(U)): ");
             char lastcommand[20] ;
             char cleanedver[10] ;
             if (!fgets(lastcommand, sizeof(lastcommand), stdin)) {
