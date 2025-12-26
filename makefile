@@ -1,11 +1,10 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -Iinclude
-LDFLAGS = 
 
 SRCDIR = src
 INCDIR = include
 OBJDIR = obj
-SAVEDIR = saves
+SAVEDIR = saveedgames
 
 TARGET = chess
 
@@ -16,7 +15,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	@echo "Linking $(TARGET)..."
-	$(CC) $(OBJECTS) $(LDFLAGS) -o $(TARGET)
+	$(CC) $(OBJECTS) -o $(TARGET)
 	@echo "✓ Build complete! Run with: ./$(TARGET)"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
