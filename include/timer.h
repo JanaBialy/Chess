@@ -11,6 +11,4 @@ void displaytimer(Gameclock *clk);
 
 Gameclock setuptimermenu(void);
 
-
-
 #endif

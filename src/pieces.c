@@ -13,7 +13,6 @@ typedef struct
     int col;
 } move;
 
-
 int absolute(int x)
 {
     return (x < 0) ? -x : x;
